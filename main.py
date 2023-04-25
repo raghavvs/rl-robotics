@@ -2,6 +2,8 @@ import dqn
 import a2c
 import ppo
 
+print("Starting the main script...")
+
 def get_user_choice():
     print("Please choose which script you'd like to run:")
     print("1. DQN")
@@ -22,4 +24,5 @@ def run_selected_script(choice):
 
 if __name__ == "__main__":
     user_choice = get_user_choice()
+    print(f"User choice: {user_choice}")
     run_selected_script(user_choice)

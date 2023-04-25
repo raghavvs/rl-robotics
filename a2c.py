@@ -33,9 +33,13 @@ from gym import spaces
 from pybullet_envs.bullet.kuka_diverse_object_gym_env import KukaDiverseObjectEnv  
 import pybullet as p
 
+# if gpu is to be used
+device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
+
 resize = T.Compose([T.ToPILImage(),
                     T.Resize(40, interpolation=Image.CUBIC),
                     T.ToTensor()])
+
 def worker(remote, env_fn):
     # Ignore CTRL+C in the worker process
     signal.signal(signal.SIGINT, signal.SIG_IGN)
@@ -143,15 +147,6 @@ def make_batch_env(test):
             for idx in range(mp.cpu_count()*2)])
 
 envs = make_batch_env(test=False)
-
-# if gpu is to be used
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-# Actor-Critic implementation
-
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
 
 def build_hidden_layer(input_dim, hidden_layers):
     """Build hidden layer.
