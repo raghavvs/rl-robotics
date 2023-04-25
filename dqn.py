@@ -41,7 +41,7 @@ if is_ipython:
 plt.ion()
 
 # if gpu is to be used
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 Transition = namedtuple('Transition',
                         ('state', 'action', 'next_state', 'reward'))
@@ -320,6 +320,15 @@ def main():
     print("Elapsed time: {}".format(timedelta(seconds=elapsed)))
 
     env.close()
+
+    # Plotting the scores vs. episode
+    plt.figure()
+    plt.plot(range(1, len(scores) + 1), scores)
+    plt.xlabel('Episode')
+    plt.ylabel('Score')
+    plt.title('Score vs. Episode')
+    plt.grid()
+    plt.show()
 
 if __name__ == "__main__":
     main()

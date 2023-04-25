@@ -462,13 +462,6 @@ def train(env, policy, optimizer, episodes=100):
         writer.close()
         env.close()
 
-        fig = plt.figure()
-        plt.plot(np.arange(len(save_scores)), save_scores)
-        plt.ylabel('Score')
-        plt.xlabel('episode #')
-        plt.grid()
-        plt.show()
-
         return save_scores
 
 def main():
@@ -486,12 +479,20 @@ def main():
     optimizer = optim.Adam(policy.parameters(), lr=2e-4)
 
     start_time = timeit.default_timer()
-    scores = train(env, policy, optimizer, episodes=100)
+    save_scores = train(env, policy, optimizer, episodes=100)
     elapsed = timeit.default_timer() - start_time
 
-    mean_reward = sum(scores) / len(scores)
+    mean_reward = sum(save_scores) / len(save_scores)
     print('Average Score: {:.2f}'.format(mean_reward))
     print("Elapsed time: {}".format(timedelta(seconds=elapsed)))
+
+    # Plot scores
+    fig = plt.figure()
+    plt.plot(np.arange(len(save_scores)), save_scores)
+    plt.ylabel('Score')
+    plt.xlabel('episode #')
+    plt.grid()
+    plt.show()
 
     env.close()
 
